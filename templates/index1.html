@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>登录</title>
+<link rel="stylesheet" href="/static/css/style2.css">
+</head>
+<body>
+<div class="login-form">
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+			<form  method="post" action="{{ url_for('.login') }}">
+					<input type="text" class="text" name="username" placeholder="用户名" >
+					<input type="text" name="password" placeholder="密码">
+
+	<div class="signin">
+		<input type="submit" value="登录" >
+	</div>
+            </form>
+</div>
+
+		<div class="login-form">
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+			<form method="post" action="{{ url_for('.register') }}">
+					<input type="text" class="text" name="username" placeholder="用户名" >
+					<input type="text" name="password" placeholder="密码">
+
+	<div class="signin">
+		<input type="submit" value="注册" >
+	</div></form>
+</div>
+		<div class="login-form">
+		<div class="head-info">
+			<label class="lbl-1"> </label>
+			<label class="lbl-2"> </label>
+			<label class="lbl-3"> </label>
+		</div>
+			<div class="clear"> </div>
+			<form method="post" action="{{ url_for('message.reset_send') }}">
+					<input type="text" class="text" name="username" placeholder="用户名" >
+
+	<div class="signin">
+		<input type="submit" value="重置密码" >
+	</div></form>
+</div>
+
+</body>
+</html>

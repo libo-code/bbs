@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import time
 
 from flask import Flask
 from flask_admin import Admin
@@ -20,6 +21,21 @@ from routes.message import main as mail_routes
 
 class UserModelView(ModelView):
     column_searchable_list = ('username', 'password')
+
+def count(input):
+    # log('count using jinja filter')
+    return len(input)
+
+
+def format_time(unix_timestamp):
+    # enum Year():
+    #     2013
+    #     13
+    # f = Year.2013
+    f = '%Y-%m-%d %H:%M:%S'
+    value = time.localtime(unix_timestamp)
+    formatted = time.strftime(f, value)
+    return formatted
 
 
 def configured_app():
@@ -61,6 +77,9 @@ def register_routes(app):
     app.register_blueprint(reply_routes, url_prefix='/reply')
     # app.register_blueprint(board_routes, url_prefix='/boards')
     app.register_blueprint(mail_routes, url_prefix='/message')
+    app.template_filter()(count)
+    app.template_filter()(format_time)
+
 
 
 # 运行代码

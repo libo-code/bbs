@@ -98,34 +98,34 @@ def created_topic(user_id):
 
 def replied_topic(user_id):
     # O(k)+O(m*n)
-    # rs = Reply.all(user_id=user_id)
-    # ts = []
-    # for r in rs:
-    #     t = Topic.one(id=r.topic_id)
-    #     ts.append(t)
-    # return ts
+    rs = Reply.all(user_id=user_id)
+    ts = []
+    for r in rs:
+        t = Topic.one(id=r.topic_id)
+        ts.append(t)
+    return ts
     #
     #     sql = """
     # select * from topic
     # join reply on reply.topic_id=topic.id
     # where reply.user_id=1
     # """
-    k = 'replied_topic_{}'.format(user_id)
-    if cache.exists(k):
-        v = cache.get(k)
-        ts = json.loads(v)
-        return ts
-    else:
-        rs = Reply.all(user_id=user_id)
-        ts = []
-        for r in rs:
-            t = Topic.one(id=r.topic_id)
-            ts.append(t)
+    # k = 'replied_topic_{}'.format(user_id)
+    # if cache.exists(k):
+    #     v = cache.get(k)
+    #     ts = json.loads(v)
+    #     return ts
+    # else:
+    #     rs = Reply.all(user_id=user_id)
+    #     ts = []
+    #     for r in rs:
+    #         t = Topic.one(id=r.topic_id)
+    #         ts.append(t)
+    #
+    #     v = json.dumps([t.json() for t in ts])
+    #     cache.set(k, v)
 
-        v = json.dumps([t.json() for t in ts])
-        cache.set(k, v)
-
-        return ts
+        # return ts
     # ts = Topic.query\
     #     .join(Reply, Topic.id==Reply.topic_id)\
     #     .filter(Reply.user_id==user_id)\
@@ -133,21 +133,34 @@ def replied_topic(user_id):
     # return ts
 
 
+# @main.route('/profile')
+# def profile():
+#     print('running profile route')
+#     u = current_user()
+#     if u is None:
+#         return redirect(url_for('.index'))
+#     else:
+#         created = created_topic(u.id)
+#         replied = replied_topic(u.id)
+#         return render_template(
+#             'profile.html',
+#             user=u,
+#             created=created,
+#             replied=replied
+#         )
+
+
 @main.route('/profile')
 def profile():
-    print('running profile route')
     u = current_user()
     if u is None:
         return redirect(url_for('.index'))
     else:
-        created = created_topic(u.id)
-        replied = replied_topic(u.id)
-        return render_template(
-            'profile.html',
-            user=u,
-            created=created,
-            replied=replied
-        )
+        topics = created_topic(u.id)
+        b = sorted(topics, key=lambda t: t.created_time, reverse=True)
+        replies = replied_topic(u.id)
+        replies_topics = sorted(replies, key=lambda t: t.created_time, reverse=True)
+        return render_template('profile1.html', u=u, topics=b, ms=replies_topics)
 
 
 @main.route('/setting_view')
@@ -171,7 +184,7 @@ def setting_username():
     user_name = form['name']
     qianming = form['signature']
     User.update(u.id, username=user_name, qianming=qianming)
-    return redirect(url_for('index.index'))
+    return redirect(url_for('index.setting_view'))
 
 
 @main.route('/setting_password', methods=['POST'])

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)https://cnodejs.org/user/xuxu7 -->
+<html >
+<head>
+    <meta charset="UTF-8">
+
+
+  <!-- style -->
+  <link rel="stylesheet" href="/static/css/index.min.23a5b1ca.min.css">
+
+    <title>个人主页</title>
+
+</head>
+<body>
+<!-- navbar -->
+<div id="main">
+  <div id="sidebar">
+
+  <div class="panel">
+
+    <div class="header">
+      <span class="col_fade">个人信息</span>
+    </div>
+    <div class="inner">
+      <div class="user_card">
+  <div>
+    <a class="user_avatar" href="{{ url_for('index.profile') }}">
+      <img src="{{ u.image }}">
+    </a>
+    <span class="user_name"><a class="dark" href="{{ url_for('index.profile') }}">{{ u.username }}</a></span>
+
+    <div class="board clearfix">
+    </div>
+    <div class="space clearfix"></div>
+    <span class="signature">
+        {{ u.qianming }}
+    </span>
+  </div>
+</div>
+
+
+
+    </div>
+
+  </div>
+</div>
+
+
+<div id="content">
+  <div class="panel">
+    <div class="header">
+      <ul class="breadcrumb">
+        <li><a href="{{ url_for('index.profile') }}">主页</a><span class="divider">/</span></li>
+      </ul>
+    </div>
+    <div class="inner userinfo">
+      <div class="user_big_avatar">
+        <img src="{{ u.image }}" class="user_avatar" >
+      </div>
+      <a class="dark">{{ u.username }}</a>
+      <p class="col_fade">注册时间 {{ u.created_time | format_time}}</p>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">最近创建的话题</span>
+    </div>
+
+    <div class="cell">
+    {% for t in topics %}
+  <a class="user_avatar pull-left" href="{{ url_for('index.profile') }}">
+    <img src="{{ u.image }}">
+  </a>
+
+  <a class="last_time pull-right" href="{{ url_for('index.profile') }}">
+    <img class="user_small_avatar" src="{{ u.image }}">
+    <span class="last_active_time">{{ t.created_time | format_time}}</span>
+  </a>
+        <div class="topic_title_wrapper">
+      <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}" >
+          {{ t.title }}
+          <span>{{ t.replies() | count }} / {{ t.views }}</span>
+                                {# count(t.replies()) #}
+{#                                 <span>{{ t.reply_count() }} / {{ t.views }}</span>#}
+                                {#len(Reply.all(topic_id=t.id))#}
+
+    </a>
+
+  </div>
+        {% endfor %}
+</div>
+  </div>
+
+  <div class="panel">
+    <div class="header">
+      <span class="col_fade">最近参与的话题</span>
+    </div>
+
+    <div class="cell">
+    {% for m in ms %}
+  <a class="user_avatar pull-left" href="{{ url_for('index.profile') }}">
+    <img src="{{ u.image }}">
+  </a>
+
+
+  <a class="last_time pull-right" >
+    <img class="user_small_avatar" src="{{ u.image }}">
+    <span class="last_active_time">{{ m.created_time | format_time}}</span>
+  </a>
+         <div class="topic_title_wrapper">
+      <a class="topic_title" href="{{ url_for('topic.detail', id=m.id) }}" >
+          {{ m.title }}
+          <span>{{ m.replies() | count }} / {{ m.views }}</span>
+                                {# count(t.replies()) #}
+{#                                 <span>{{ t.reply_count() }} / {{ t.views }}</span>#}
+                                {#len(Reply.all(topic_id=t.id))#}
+
+    </a>
+  </div>
+    {% endfor %}
+</div>
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+</body></html>
